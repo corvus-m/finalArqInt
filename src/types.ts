@@ -17,12 +17,8 @@ export type CharacterFind = {
   created: string
 }
 
-// export type CharactersFind{
+ 
 
-//     info: Info
-//     results: [Character]
-      
-// }
 
 
 export type EpisodeFind = {
@@ -34,10 +30,18 @@ export type EpisodeFind = {
   created: string
 }
 
-// export type EpisodesFind = {
-//     info: Info
-//     results: [Episode]
-// }
+export type CharactersFind = {
+     info: object,//Info any?
+     results: string[] //[Character]
+ }
+
+export type FilterCharacterType = {
+     name: string,
+     status: string,
+     species: string,
+     type: string,
+     gender: string
+   }
 
 export type LocationFind = {
     id: number,

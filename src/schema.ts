@@ -28,11 +28,6 @@ type Episode {
   created: String
 }
 
-type Episodes {
-  info: Info
-  results: [Episode]
-}
-
 type Location {
   id: ID
   name: String
@@ -42,10 +37,6 @@ type Location {
   created: String
 }
 
-type Locations {
-  info: Info
-  results: [Location]
-}
 
 type Info {
   count: Int
@@ -54,10 +45,20 @@ type Info {
   prev: Int
 }
 
+input FilterCharacter {
+  name: String
+  status: String
+  species: String
+  type: String
+  gender: String
+}
 
 
  type Query {
   character(id: ID!): Character
+  characters(page: Int, filter: FilterCharacter): Characters
+  
+
  }
 `
 

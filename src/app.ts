@@ -3,7 +3,7 @@ import { connect } from "http2";
 import { typeDefs } from "./schema";
 //import { authenticate } from "./auth";
 
-import { Query, Character } from "./resolvers/Query"; //faltan exports
+import { Query, Character, Location, Episode, Characters } from "./resolvers/Query"; //faltan exports
 // import { Mutation } from "./resolvers/Mutation";
 
 const config = require('./config.js');
@@ -16,7 +16,10 @@ const config = require('./config.js');
 
 const resolvers = {
   Query,
-  Character
+  Character,
+  Location,
+  Episode,
+  Characters
 }
 
 const run =async () => {

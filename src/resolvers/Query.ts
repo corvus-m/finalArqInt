@@ -4,12 +4,13 @@
 
 import axios, { AxiosResponse } from 'axios';
 
-import { EpisodeFind, CharacterFind, LocationFind } from "../types";
+import { EpisodeFind, CharacterFind, LocationFind, InfoFind, FilterCharacterType, CharactersFind } from "../types";
 
 import http from 'http';
 
 
 const apiUrl:string = "https://rickandmortyapi.com/api";
+
 
 
 
@@ -23,6 +24,56 @@ export const Query = {
     // console.log(car.name);
     // car.episode.forEach(async (e:string) => console.log(e) )
     return car;
+  },
+
+  characters: async(parent:any, args:any , context:any) => {
+    
+    const filtro:FilterCharacterType = args.filter as FilterCharacterType;
+
+    console.log(filtro);
+    let filtroQuery:string = "";
+    let cont:number = 0;
+
+    if(filtro.gender != null) {
+      filtroQuery = "?gender=" +filtro.gender; 
+      cont++;
+    }
+
+    if(filtro.name  != null) {
+      if (!cont)  {filtroQuery = "?name=" +filtro.name;} 
+      else filtroQuery += "&name="+filtro.name;
+      cont++;
+    }
+
+    if(filtro.species  != null) {
+      if (!cont)  {filtroQuery = "?species=" +filtro.species;} 
+      else filtroQuery += "&species="+filtro.species;
+      cont++;
+    }
+
+    if(filtro.status  != null){
+      if (!cont)  {filtroQuery = "?status=" +filtro.status;} 
+      else filtroQuery += "&status="+filtro.status;
+      cont++;
+    }
+
+    if(filtro.type  != null){
+      if (!cont)  {filtroQuery = "?type=" +filtro.type;} 
+      else filtroQuery += "&type="+filtro.type;
+      cont++;
+    }
+
+
+    //let urlfinal:string = apiUrl +""
+
+    const datos:CharactersFind = (await axios.get(apiUrl+"/character/"+filtroQuery)).data
+    // const informacion:InfoFind = datos.info;
+    // const personajes:any =datos.results;
+    // console.log(personajes);
+    
+
+return datos;
+
   }
 
 
@@ -34,25 +85,118 @@ export const Query = {
   export const Character = { 
     
     episode:  async (parent:any, args: any, context:any) => {
-      console.log("EEEEE");
-      console.log(parent.name);
+      // console.log("EEEEE");
+      // console.log(parent.name);
 
             const episodes: EpisodeFind[] =parent.episode.map(async (ep:string) =>{
-              console.log("ep");
-              console.log(ep);
-              const episodio:EpisodeFind = (await axios.get(ep)).data as unknown as EpisodeFind ;
-              console.log(episodio.name)
+              // console.log("ep");
+              // console.log(ep);
+              const episodio:EpisodeFind = (await axios.get(ep)).data  as EpisodeFind ;
+              //console.log(episodio.name)
               return episodio;
           
             } );
             
             return episodes;
-        }
+        },
+        location:  async (parent:any, args: any, context:any) => {
+          // console.log("EEEEE");
+           console.log(parent.location);
+    
+                const loc: LocationFind = (await axios.get(parent.location.url)).data as LocationFind;
+                return loc;
+
+            },
+        origin:  async (parent:any, args: any, context:any) => {
+          // console.log("EEEEE");
+           console.log(parent.origin);
+    
+                const loc: LocationFind = (await axios.get(parent.origin.url)).data as LocationFind;
+                return loc;
+
+            }
+            
 
 
    }
 
+   export const Episode = { 
+    
+    characters:  async (parent:any, args: any, context:any) => {
 
+
+            const personajes: CharacterFind[] =parent.characters.map(async (car:string) =>{
+              // console.log("ep");
+              // console.log(ep);
+              const personaje:CharacterFind = (await axios.get(car)).data  as CharacterFind ;
+              //console.log(episodio.name)
+              return personaje;
+          
+            } );
+            
+            return personajes;
+        }
+            
+
+
+   }
+
+   export const Location = { 
+    
+    residents:  async (parent:any, args: any, context:any) => {
+
+
+            const personajes: CharacterFind[] =parent.residents.map(async (car:string) =>{
+              // console.log("ep");
+              // console.log(ep);
+              const personaje:CharacterFind = (await axios.get(car)).data  as CharacterFind ;
+              //console.log(episodio.name)
+              return personaje;
+          
+            } );
+            
+            return personajes;
+        }
+            
+
+
+   }
+
+   
+   export const Characters = { 
+    
+    info:  async (parent:any, args: any, context:any) => {
+
+
+            const information: InfoFind =parent.info  ;
+            console.log("aaaaa");
+            console.log(information);
+            return information;
+
+            
+        },
+
+  //   results:   async (parent:any, args: any, context:any) => {
+     
+  //     console.log("BBBB");
+  //     //console.log(parent.results);
+      
+  //     const personajes: CharacterFind[] =parent.results.map(async (car:string) =>{
+  //       // console.log("ep");
+  //       // console.log(ep);
+  //       const personaje:CharacterFind = (await axios.get(car)).data  as CharacterFind ;
+  //       console.log(personaje)
+  //       return personaje;
+    
+  //     } );
+      
+  //     return personajes;
+  // }
+
+}
+
+
+   
 // // addRecipie: async (parent:any, {name, description, ingredientes}:{ name:string, description:string, ingredientes:string[], res:any},
 // //     {token, collectionIng, collectionRec, res}:{token:string, collectionIng:Collection, collectionRec:Collection,  res:any}) => {
 
